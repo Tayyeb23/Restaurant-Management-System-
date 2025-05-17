@@ -1,0 +1,1179 @@
+#include<iostream>
+#include<fstream>
+#include<Windows.h>
+#include<conio.h>
+#include<string>
+#include<sstream>
+#include<cstdlib>
+#include <chrono>
+#include <thread>
+#include<iomanip>
+using namespace std;
+
+class User {
+public:
+    string username;
+    string password;
+};
+
+class UserManager {
+private:
+    const int MAX_USERS = 100;
+    User users[100];
+    int numUsers = 0;
+
+public:
+    void signup();
+    bool login();
+    void saveUsersToFile();
+    void loadUsersFromFile();
+};
+
+class Menu {
+public:
+    void animateText(const std::string& text, int delay);
+    void displayCoverPage();
+    void displaybranch();
+    void displaybranch1();
+    void displaybranch2();
+    int getUserChoice();
+};
+
+// Implementation of UserManager methods
+void UserManager::signup() {
+    string username, password;
+    cout << "\t\t\t\t\tEnter username: ";
+    cin >> username;
+
+    // Check if username already exists
+    for (int i = 0; i < numUsers; i++) {
+        if (users[i].username == username) {
+            cout << "\t\t\t\t\tUsername already exists. Please choose a different username." << std::endl;
+            return;
+        }
+    }
+
+    cout << "\t\t\t\t\tEnter password: ";
+    cin >> password;
+
+    // Create a new user
+    User newUser;
+    newUser.username = username;
+    newUser.password = password;
+
+    // Add the new user to the array
+    users[numUsers] = newUser;
+    numUsers++;
+
+    cout << "\t\t\t\t\tRegistration successful!" << std::endl;
+}
+
+bool UserManager::login() {
+    string username, password;
+    cout << "\t\t\t\t\tEnter username: ";
+    cin >> username;
+    cout << "\t\t\t\t\tEnter password: ";
+
+    char ch;
+    password = "";
+
+    while ((ch = _getch()) != 13) {
+        if (ch == 8) {
+            if (!password.empty()) {
+                password.pop_back();
+                cout << "\b \b";
+            }
+        }
+        else {
+            password.push_back(ch);
+            cout << '*';
+        }
+    }
+
+    for (int i = 0; i < numUsers; i++) {
+        if (users[i].username == username && users[i].password == password) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void UserManager::saveUsersToFile() {
+    ofstream file("users.txt");
+    if (file.is_open()) {
+        for (int i = 0; i < numUsers; i++) {
+            file << users[i].username << " " << users[i].password << std::endl;
+        }
+        file.close();
+    }
+    else {
+        cout << "\t\t\t\t\tUnable to open file for writing." << std::endl;
+    }
+}
+
+void UserManager::loadUsersFromFile() {
+    ifstream file("users.txt");
+    if (file.is_open()) {
+        numUsers = 0;
+        std::string username, password;
+        while (file >> username >> password) {
+            User newUser;
+            newUser.username = username;
+            newUser.password = password;
+            users[numUsers] = newUser;
+            numUsers++;
+        }
+        file.close();
+    }
+    else {
+        // Handle unable to open file for reading
+    }
+}
+
+// Implementation of Menu methods
+void Menu::animateText(const std::string& text, int delay) {
+    for (char c : text) {
+        cout << c;
+        cout.flush();
+        this_thread::sleep_for(std::chrono::milliseconds(delay));
+    }
+}
+
+void Menu::displayCoverPage() {
+    cout << std::endl << std::endl << std::endl;
+    animateText("================================================================================================================================", 0);
+    animateText("\n\n\n\n\n\n\n\t\t\t\t\t\t   Welcome to Restaurant Hub Network\n", 100);
+    cout << "\t\t\t\t\t\t-----------------------------------------\n";
+    animateText("             \t\t\t\t=> Press << 1 >> : Signup.\n\t\t\t\t\t=> Press  << 2 >>: Login.\n\t\t\t\t\t=> Press  << 3 >>: Exit.", 100);
+    cout << "\n\n\t\t\t\t-----------------------------------------\n\n\n";
+    animateText("==================================================================================================================================", 0);
+}
+void Menu::displaybranch() {
+    cout << endl << endl << endl;
+  
+    animateText("\n\n\n\n\t\t\t\t\t\t   Welcome to Islamabad Branch\n", 40);
+}
+void Menu::displaybranch1() {
+    cout << endl << endl << endl;
+    animateText("\n\n\n\n\t\t\t\t\t\t   Welcome to Lahore Branch\n", 40);
+}
+void Menu::displaybranch2() {
+    cout << endl << endl << endl;
+    animateText("\n\n\n\n\t\t\t\t\t\t   Welcome to Karachi Branch\n", 40);
+}
+
+
+int Menu::getUserChoice() {
+    int choice;
+    cout << "\n\t\t\t\t\tEnter your choice: ";
+    cin >> choice;
+    return choice;
+}
+
+class Record {
+public:
+    virtual void menu() = 0;
+};
+class FoodRecord : public Record {
+private:
+    // Food class members and functions go here...
+    double food_id, price;
+    string name, category, branch_name;
+ 
+
+public:
+    void menu() override {
+        // Food menu implementation...
+    p:
+        system("cls");
+        int x, choice;
+        /*cout << "\n\n\t\t\t\tFood Management System";
+        cout << "\n1.placeorder";
+        cout << "\n2.View History";
+        cout << "\n3.Manage Food Records";
+        cout << "\n4.Exit";
+        cout << "\n\n Your Choice :";*/
+        cout << endl << endl << endl << endl << endl << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*****************************************************************************************\n";
+        cout << "\t\t\t\t\t=>Food Management System::-" << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press << 1 >> : placeorder." << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press  << 2 >>: View History." << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press  << 3 >>:Manage Food Records. " << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press  << 4 >>: Exit. " << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t*****************************************************************************************\n";
+
+        cout << endl;
+        cout << "\t\t\t\t\tEnter your Choice::";
+        cin >> choice;
+        if (choice == 1) {
+            placeOrder();
+            _getch();
+            menu();
+        }
+        if (choice == 2) {
+            viewOrderHistory();
+            _getch();
+            menu();
+        }
+        if (choice == 3) {
+            system("cls");
+          /*  cout << "\n\n\n1.Insert Food Item";
+            cout << "\n2.Display Food Items";
+            cout << "\n3.Search Food Item";
+            cout << "\n4.Modify Food Item";
+            cout << "\n5.Delete Food Item";
+            cout << "\n6.Exit";
+            cout << "\n\n Your Choice :";*/
+            cout << endl << endl << endl << endl << endl << endl << endl;
+            Sleep(200);
+            cout << "\t\t\t*****************************************************************************************\n";
+           
+            Sleep(200);
+            cout << "\t\t\t*                                                                                        *\n";
+            cout << "\t\t\t\t\t\t\t=> Press << 1 >> : Insert Food Items." << endl << endl;
+            Sleep(200);
+            cout << "\t\t\t*                                                                                        *\n";
+            cout << "\t\t\t\t\t\t\t=> Press  << 2 >>: Display Food Items." << endl << endl;
+            Sleep(200);
+            cout << "\t\t\t*                                                                                        *\n";
+            cout << "\t\t\t\t\t\t\t=> Press  << 3 >>:Search Food Items. " << endl << endl;
+            Sleep(200);
+            cout << "\t\t\t*                                                                                        *\n";
+            cout << "\t\t\t\t\t\t\t=> Press  << 4 >>: Modify Food Items. " << endl << endl;
+            Sleep(200);
+            cout << "\t\t\t*                                                                                        *\n";
+            cout << "\t\t\t\t\t\t\t=> Press  << 5 >>:Delete Food Items. " << endl << endl;
+            Sleep(200);
+            cout << "\t\t\t*                                                                                        *\n";
+            cout << "\t\t\t\t\t\t\t=> Press  << 6 >>:Exit. " << endl << endl;
+            Sleep(200);
+            cout << "\t\t\t*                                                                                        *\n";
+            cout << "\t\t\t*****************************************************************************************\n";
+
+            cout << endl;
+            cout << "\t\t\t\t\tEnter your Choice::";
+            cin >> x;
+            switch (x) {
+            case 1:
+                insert();
+                break;
+            case 2:
+                display();
+                break;
+            case 3:
+                search();
+                break;
+            case 4:
+                modify();
+                break;
+            case 5:
+                del();
+                break;
+            case 6:
+                exit(0);
+                break;
+           
+            default:
+                cout << "\n\n Invalid Value... please try again...";
+            }
+            _getch();
+            goto p;
+            // ...
+        }
+        if (choice == 4) {
+            exit(0);
+        }
+    }
+   
+    // Other food-related functions...
+
+
+    void insert() {
+        system("cls");
+        fstream file;
+        cout << "\n\n\n \t\t\t\t\tInsert Food Item";
+        cout << "\n\n\nFood ID :";
+        cin >> food_id;
+        cout << "\n\n\nFood Name:";
+        cin >> name;
+        cout << "\n\n\nFood Price :";
+        cin >> price;
+        cout << "\n\n\nFood Category :";
+        cin >> category;
+        file.open("food.txt", ios::out | ios::app);
+        file << " " << food_id << " " << name << " " << price << " " << category << "\n";
+        file.close();
+        cout << "\n\n\n\t\t Food Item Inserted Successfully";
+    }
+  
+
+
+    void display() {
+        system("cls");
+        fstream file;
+        cout << "\n\n\n\t\t\tDisplay Food Items";
+        file.open("food.txt", ios::in);
+        if (!file) {
+            cout << "\n\nFile Opening Error....";
+            _getch();
+            menu();
+        }
+        file >> food_id >> name >> price >> category;
+        while (!file.eof()) {
+            cout << "\n\n\n\nFood ID :" << food_id;
+            cout << "\n\nFood Name :" << name;
+            cout << "\n\nFood Price :" << price;
+            cout << "\n\nFood Category :" << category;
+            file >> food_id >> name >> price >> category;
+        }
+        file.close();
+    }
+  
+
+   void search() {
+        system("cls");
+        fstream file;
+        int food_idd, found = 0;
+        cout << "\n\n\n\t\t\tSearch Food Item";
+        file.open("food.txt", ios::in);
+        if (!file) {
+            cout << "\n\nFile Opening Error....";
+            _getch();
+            menu();
+        }
+        cout << "\n\n Food ID for Search :";
+        cin >> food_idd;
+        file >> food_id >> name >> price >> category;
+        while (!file.eof()) {
+            if (food_idd == food_id) {
+                system("cls");
+                cout << "\n\n\n\t\t\tSearch Food Item";
+                cout << "\n\nFood ID :" << food_id;
+                cout << "\n\nFood Name :" << name;
+                cout << "\n\nFood Price :" << price;
+                cout << "\n\nFood Category :" << category;
+                found++;
+            }
+            file >> food_id >> name >> price >> category;
+        }
+        file.close();
+        if (found == 0) {
+            cout << "\n\n Food ID can't found...";
+        }
+    }
+   
+
+
+    void modify() {
+        system("cls");
+        int pricee = 0, test_id, found = 0;
+        string name1, category1;
+        fstream file, file1;
+        cout << "\n\n\t\t\t Modify Food Item";
+        file.open("food.txt", ios::in);
+        if (!file) {
+            cout << "\n\nFile Opening Error...";
+            _getch();
+            menu();
+        }
+        cout << "\n\nFood ID for Modify :";
+        cin >> test_id;
+
+        // Read the modified values from the user
+        cout << "\nEnter the modified name: ";
+        cin >> name1;
+        cout << "\nEnter the modified price: ";
+        cin >> pricee;
+        cout << "\nEnter the modified category: ";
+        cin >> category1;
+
+        file1.open("food1.txt", ios::app | ios::out);
+        file >> food_id >> name >> price >> category;
+        while (!file.eof()) {
+            if (test_id == food_id) {
+                cout << "\n\n\t\t\t Modify Food Item";
+                cout << "\nFood Name :" << name1;
+                cout << "\nFood Price :" << pricee;
+                cout << "\nFood Category :" << category1;
+                file1 << " " << food_id << " " << name1 << " " << pricee << " " << category1 << "\n";
+                found++;
+            }
+            else {
+                file1 << " " << food_id << " " << name << " " << price << " " << category << "\n";
+            }
+            file >> food_id >> name >> price >> category;
+        }
+        file.close();
+        file1.close();
+        remove("food.txt");
+        rename("food1.txt", "food.txt");
+
+        if (found == 0) {
+            cout << "\n\n Food ID Can't found...";
+        }
+        else {
+            cout << "\n\n\t\t\t Record Modified Successfully...";
+        }
+    }
+
+  
+
+    void del() {
+        system("cls");
+        int test_id, found = 0;
+        fstream file, file1;
+        cout << "\n\n\t\t\tDelete Food Item";
+        file.open("food.txt", ios::in);
+        if (!file) {
+            cout << "\n\nFile Opening Error...";
+            _getch();
+            menu();
+        }
+        cout << "\n\nFood ID for delete Record :";
+        cin >> test_id;
+        file1.open("food1.txt", ios::app | ios::out);
+        file >> food_id >> name >> price >> category;
+        while (!file.eof()) {
+            if (test_id == food_id) {
+                cout << "\n\nRecord is deleted successfully...";
+                found++;
+            }
+            else {
+                file1 << " " << food_id << " " << name << " " << price << " " << category << "\n";
+            }
+            file >> food_id >> name >> price >> category;
+        }
+        file.close();
+        file1.close();
+        remove("food.txt");
+        rename("food1.txt", "food.txt");
+
+        if (found == 0) {
+            cout << "\n\n Food ID Can't found...";
+        }
+    }
+ 
+
+    void placeOrder() {
+        system("cls");
+        fstream file, orderHistoryFile;
+        cout << "\n\n\t\t\t\tPlace Order";
+
+        int order_id, quantity;
+        int total = 0;
+
+        // Prompt user to enter branch name
+        cout << "\n\nEnter Branch Name: ";
+        cin >> branch_name;
+
+        cout << "\n\n\nMenu:";
+        display();  // Display the menu
+
+        cout << "\n\nEnter Food ID to place an order: ";
+        cin >> order_id;
+
+        cout << "\nEnter quantity: ";
+        cin >> quantity;
+
+        // Get food details
+        file.open("food.txt", ios::in);
+        file >> food_id >> name >> price >> category;
+        while (!file.eof()) {
+            if (order_id == food_id) {
+                total = quantity * price;
+                break;
+            }
+            file >> food_id >> name >> price >> category;
+        }
+        file.close();
+
+        // Display the bill
+        displayBill(name, quantity, total,branch_name);  // Added branch_name
+
+        // Save order details to file
+        orderHistoryFile.open("daily_sales.txt", ios::out | ios::app);
+        orderHistoryFile << "Date: " << __DATE__ << " Time: " << __TIME__ << "\n";
+        orderHistoryFile << "Branch: " << branch_name << "\n";  // Added branch_name
+        orderHistoryFile << "Item: " << name << "\tQuantity: " << quantity << "\tCategory: " << category << "\tTotal: $" << total << "\n";
+        orderHistoryFile.close();
+
+        cout << "\n\nOrder Placed Successfully\n";
+    }
+
+
+    void displayBill(const string& foodName, int quantity, int total,string& branch_name) {
+        cout << "\n\n\n\t\t\t\tBill";
+        cout << "\n" << foodName << "\t\t" << quantity << " x $" << price << "\t\tTotal: $" << total << "\n";
+    }
+
+    //
+    void viewOrderHistory() {
+        system("cls");
+        ifstream historyFile("daily_sales.txt");
+        if (!historyFile) {
+            cout << "\nNo order history available.\n";
+            return;
+        }
+
+        string line;
+        while (getline(historyFile, line)) {
+            cout << line << endl;
+        }
+
+        historyFile.close();
+    }
+
+};
+
+class EmployeeRecord : public Record {
+private:
+    // Employee class members and functions go here...
+    int emp_id, sal, group_id;
+    string name, address,branch_name;
+    // ...
+
+public:
+    void menu() override {
+        // Employee menu implementation...
+    p:
+        system("cls");
+        int x;
+        /*cout << "\n\n\t\t\t\tControl Pannel";
+        cout << "\n\n\n1.Insert Record";
+        cout << "\n2.Display Record";
+        cout << "\n3.Search Record";
+        cout << "\n4.Modify Record";
+        cout << "\n5.Delete Record";
+        cout << "\n6.Group Record";
+        cout << "\n7.Search Group";
+        cout << "\n8.Show All Groups";
+        cout << "\n9.Show Employee of Specific branch";
+        cout << "\n10.Exit";
+        cout << "\n\n Your Choice :";*/
+        cout << endl << endl << endl << endl << endl << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*****************************************************************************************\n";
+
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press << 1 >> : Insert Records." << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press  << 2 >>: Display Records." << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press  << 3 >>:Search Records. " << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press  << 4 >>: Modify Records. " << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press  << 5 >>:Delete Records. " << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press  << 6 >>:Group Records. " << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press  << 7 >>:Search Groups. " << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press  << 8 >>:Show All Groups. " << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press  << 9 >>:Show Employee of Specific branch. " << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t\t=> Press  << 10 >>:Exit. " << endl << endl;
+        
+        cout << "\t\t\t*****************************************************************************************\n";
+
+        cout << endl;
+        cout << "\t\t\t\t\tEnter your Choice::";
+        cin >> x;
+        switch (x) {
+        case 1:
+            Insert();
+            break;
+        case 2:
+            display();
+            break;
+        case 3:
+            search();
+            break;
+        case 4:
+            modify();
+            break;
+        case 5:
+            del();
+            break;
+        case 6:
+            group();
+            break;
+        case 7:
+            search_group();
+            break;
+        case 8:
+            show_group();
+            break;
+        case 9:
+            viewEmployeeByBranch();
+            break;
+        case 10:
+            exit(0);
+            break;
+        default:
+            cout << "\n\n Invalid Value... please try again...";
+        }
+        _getch();
+        goto p;
+
+        // ...
+    }
+
+    // Other employee-related functions...
+    
+
+  
+    void Insert() {
+        system("cls");
+        fstream file, file1;
+        cout << "\n\n\n \t\t\t\t\tInsert Record";
+        cout << "\n\n\nEmployee ID :";
+        cin >> emp_id;
+        cout << "\n\n\nEmployee Name:";
+        cin >> name;
+        cout << "\n\n\nEmployee Salary :";
+        cin >> sal;
+        cout << "\n\n\nEmployee Address :";
+        cin >> address;
+        cout << "\n\n\nEmployee Group ID :";
+        cin >> group_id;
+        cout << "\n\n\nBranch Name :";
+        cin >> branch_name; // Added branch name input
+
+        file.open("emp.txt", ios::out | ios::app);
+        file << " " << emp_id << " " << name << " " << sal << " " << address << " " << group_id << " " << branch_name << "\n";
+        file.close();
+
+        file1.open("group.txt", ios::out | ios::app);
+        file1 << " " << group_id << " " << emp_id << " " << sal << "\n";
+        file1.close();
+
+        file.open("groupid.txt", ios::in);
+        if (!file) {
+            file1.open("groupid.txt", ios::app | ios::out);
+            file1 << " " << group_id << "\n";
+            file1.close();
+        }
+
+        cout << "\n\n\n\t\t Record Inserted Successfully";
+    }
+
+    //display function
+ 
+
+    void display() {
+        system("cls");
+        fstream file;
+        cout << "\n\n\n\t\t\tDisplay Record";
+        file.open("emp.txt", ios::in);
+        if (!file) {
+            cout << "\n\nFile Opening Error....";
+            _getch();
+            menu();
+        }
+
+        file >> emp_id >> name >> sal >> address >> group_id >> branch_name;
+        while (!file.eof()) {
+            cout << "\n\n\n\nEmployee ID :" << emp_id;
+            cout << "\nEmployee Name :" << name;
+            cout << "\nEmployee Salary :" << sal;
+            cout << "\nEmployee Address :" << address;
+            cout << "\nEmployee Group ID :" << group_id;
+            cout << "\nBranch Name :" << branch_name;
+
+            file >> emp_id >> name >> sal >> address >> group_id >> branch_name;
+        }
+
+        file.close();
+    }
+
+    //search function
+
+
+    void search() {
+        system("cls");
+        fstream file;
+        int emp_idd, found = 0;
+        cout << "\n\n\n\t\t\tSearch Record";
+        file.open("emp.txt", ios::in);
+        if (!file) {
+            cout << "\n\nFile Opening Error....";
+            _getch();
+            menu();
+        }
+        cout << "\n\n Emlpoyee ID for Search :";
+        cin >> emp_idd;
+        file >> emp_id >> name >> sal >> address >> group_id;
+        while (!file.eof()) {
+            if (emp_idd == emp_id) {
+                system("cls");
+                cout << "\n\n\n\t\t\tSearch Record";
+                cout << "\n\nEmployee ID :" << emp_id;
+                cout << "\n\nEmployee Name :" << name;
+                cout << "\n\nEmployee Salary :" << sal;
+                cout << "\n\nEmployee Address :" << address;
+                cout << "\n\nEmployee Group ID :" << group_id;
+
+                found++;
+            }
+            file >> emp_id >> name >> sal >> address >> group_id;
+        }
+        file.close();
+        if (found == 0) {
+            cout << "\n\n Employee ID can't found...";
+        }
+
+    }
+    //modify function
+  
+    void modify() {
+        system("cls");
+        int sall = 0, test_id, found = 0;
+        string name1, address1;
+        fstream file, file1, file2, file3;
+        cout << "\n\n\t\t\t Modify Record";
+        file.open("emp.txt", ios::in);
+        file1.open("group.txt", ios::in);
+        if (!file || !file1) {
+            cout << "\n\nFile Opening Error...";
+            _getch();
+            menu();
+        }
+        cout << "\n\nEmployee ID for Modify :";
+        cin >> test_id;
+
+        // Read the modified values from the user
+        cout << "\nEnter the modified name: ";
+        cin >> name1;
+        cout << "\nEnter the modified salary: ";
+        cin >> sall;
+        cout << "\nEnter the modified address: ";
+        cin >> address1;
+
+        file2.open("emp1.txt", ios::app | ios::out);
+        file >> emp_id >> name >> sal >> address >> group_id;
+        while (!file.eof()) {
+            if (test_id == emp_id) {
+                cout << "\n\n\t\t\t Modify Record";
+                cout << "\nEmployee Name :" << name1;
+                cout << "\nEmployee Salary :" << sall;
+                cout << "\nEmployee Address :" << address1;
+                file2 << " " << emp_id << " " << name1 << " " << sall << " " << address1 << " " << group_id << "\n";
+                found++;
+            }
+            else {
+                file2 << " " << emp_id << " " << name << " " << sal << " " << address << " " << group_id << "\n";
+            }
+            file >> emp_id >> name >> sal >> address >> group_id;
+        }
+        file.close();
+        file2.close();
+        remove("emp.txt");
+        rename("emp1.txt", "emp.txt");
+        file3.open("group1.txt", ios::app | ios::out);
+        file1 >> group_id >> emp_id >> sal;
+        while (!file1.eof()) {
+            if (test_id == emp_id) {
+                file3 << " " << group_id << " " << emp_id << " " << sall << "\n";
+            }
+            else {
+                file3 << " " << group_id << " " << emp_id << " " << sal << "\n";
+            }
+            file1 >> group_id >> emp_id >> sal;
+        }
+        file1.close();
+        file3.close();
+        remove("group.txt");
+        rename("group1.txt", "group.txt");
+        if (found == 0) {
+            cout << "\n\n Employee ID Can't found...";
+        }
+        else {
+            cout << "\n\n\t\t\t Record Modified Successfully...";
+        }
+    }
+    //delete function
+  
+    void del() {
+        system("cls");
+        int test_id, found = 0;
+        fstream file, file1, file2, file3;
+        cout << "\n\n\t\t\tDelete Record";
+        file.open("emp.txt", ios::in);
+        file1.open("group.txt", ios::in);
+        if (!file || !file1) {
+            cout << "\n\nFile Opening Error...";
+            _getch();
+            menu();
+        }
+        cout << "\n\nEmployee ID for delete Record :";
+        cin >> test_id;
+        file2.open("emp1.txt", ios::app | ios::out);
+        file >> emp_id >> name >> sal >> address >> group_id;
+        while (!file.eof()) {
+            if (test_id == emp_id) {
+                cout << "\n\nRecord is deleted successfully...";
+                found++;
+            }
+            else {
+                file2 << " " << emp_id << " " << name << " " << sal << " " << address << " " << group_id << "\n";
+            }
+            file >> emp_id >> name >> sal >> address >> group_id;
+        }
+        file.close();
+        file2.close();
+        remove("emp.txt");
+        rename("emp1.txt", "emp.txt");
+        file3.open("group1.txt", ios::app | ios::out);
+        file1 >> group_id >> emp_id >> sal;
+        while (!file1.eof()) {
+            if (test_id != emp_id) {
+
+                file3 << " " << group_id << " " << emp_id << " " << sal << "\n";
+            }
+            file1 >> group_id >> emp_id >> sal;
+        }
+        file1.close();
+        file3.close();
+        remove("group.txt");
+        rename("group1.txt", "group.txt");
+        if (found == 0) {
+            cout << "\n\n Employee ID Can't found...";
+        }
+    }
+    // group function
+   
+
+    void group() {
+        system("cls");
+        fstream file;
+        cout << "\n\n\n\t\t\tGroup Record";
+        file.open("group.txt", ios::in);
+        if (!file) {
+            cout << "\n\nFile Opening Error....";
+            _getch();
+            menu();
+        }
+        file >> group_id >> emp_id >> sal;
+        while (!file.eof()) {
+            cout << "\n\nEmployee Group ID :" << group_id;
+            cout << "\n\nEmployee ID :" << emp_id;
+            cout << "\n\nEmployee Salary :" << sal;
+            file >> group_id >> emp_id >> sal;
+        }
+        file.close();
+    }
+    //search group function
+   
+    void search_group() {
+        system("cls");
+        int test_id, found = 0, emp_count = 0, sal_count = 0;
+        fstream file;
+        cout << "\n\n\t\t\tSearch Group Record";
+        file.open("group.txt", ios::in);
+        if (!file) {
+            cout << "\n\nFile Opening Error....";
+            _getch();
+            menu();
+        }
+        cout << "\n\nGroup ID for Search: ";
+        cin >> test_id;
+        system("cls");
+        cout << "\n\n\t\t\tSearch Group Record";
+        file >> group_id >> emp_id >> sal;
+        while (!file.eof()) {
+            if (test_id == group_id) {
+                cout << "\n\nEmployee Group ID :" << group_id;
+                cout << "\n\nEmployee ID :" << emp_id;
+                cout << "\n\nEmployee Salary :" << sal;
+                found++;
+                emp_count++;
+                sal_count = sal_count + sal;
+            }
+            file >> group_id >> emp_id >> sal;
+        }
+        file.close();
+        if (found != 0) {
+            cout << "\n\n\nGroup ID : " << test_id;
+            cout << "\n\nTotal Employee : " << emp_count;
+            cout << "\n\nTotal Salary : " << sal_count;
+        }
+        else {
+            cout << "\n\n Group ID can't Found...";
+        }
+    }
+    // ...
+  
+
+    void show_group() {
+        system("cls");
+        fstream file;
+        cout << "\n\n\t\t\tShow All Groups";
+        file.open("group.txt", ios::in);
+        if (!file) {
+            cout << "\n\nFile Opening Error....";
+            _getch();
+            menu();
+        }
+
+        int totalOrganizationEmployees = 0;
+        int totalOrganizationSalary = 0;
+
+        file >> group_id >> emp_id >> sal;
+        while (!file.eof()) {
+            int emp_count = 0;
+            int sal_count = 0;
+            int current_group_id = group_id;  // Store the current group ID
+
+            cout << "\n\nGroup ID: " << current_group_id;
+
+            while (group_id == current_group_id && !file.eof()) {
+                cout << "\n\nEmployee ID: " << emp_id;
+                cout << "\nEmployee Salary: " << sal;
+
+                emp_count++;
+                sal_count += sal;
+                totalOrganizationEmployees++;
+                totalOrganizationSalary += sal;
+
+                file >> group_id >> emp_id >> sal;
+            }
+
+            cout << "\n\nTotal Employees in Group: " << emp_count;
+            cout << "\nTotal Salary in Group: " << sal_count;
+        }
+
+        file.close();
+
+        cout << "\n\nTotal Employees in Organization: " << totalOrganizationEmployees;
+        cout << "\nTotal Salary in Organization: " << totalOrganizationSalary;
+    }
+
+    // ...
+    //employee branch
+    
+
+    void viewEmployeeByBranch() {
+        system("cls");
+        fstream file;
+        string target_branch;
+
+        cout << "\n\n\n\t\t\tView Employees by Branch";
+        cout << "\n\nEnter Branch Name: ";
+        cin >> target_branch;
+
+        file.open("emp.txt", ios::in);
+        if (!file) {
+            cout << "\n\nFile Opening Error....";
+            _getch();
+            menu();
+        }
+
+        int count = 0; // Counter for employees in the specified branch
+
+        file >> emp_id >> name >> sal >> address >> group_id >> branch_name;
+        while (!file.eof()) {
+            if (target_branch == branch_name) {
+                cout << "\n\n\n\nEmployee ID :" << emp_id;
+                cout << "\nEmployee Name :" << name;
+                cout << "\nEmployee Salary :" << sal;
+                cout << "\nEmployee Address :" << address;
+                cout << "\nEmployee Group ID :" << group_id;
+                cout << "\nBranch Name :" << branch_name;
+
+                count++;
+            }
+
+            file >> emp_id >> name >> sal >> address >> group_id >> branch_name;
+        }
+
+        file.close();
+
+        if (count == 0) {
+            cout << "\n\nNo employees found in the specified branch.";
+        }
+    }
+
+};
+
+class IntegratedRecord : public Record {
+private:
+    FoodRecord foodRecord;
+    EmployeeRecord employeeRecord;
+
+public:
+    void menu() override {
+        int x;
+      
+   /*     cout << "\n\n1. Managing Food Record";
+        cout << "\n2. Managing Employee Record";
+        cout << "\n3. Exit";
+        cout << "\n\n Your Choice :";*/
+        Sleep(200);
+        cout << "\t\t\t*****************************************************************************************\n";
+      
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t=> Press << 1 >> : Managing Food Record." << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t=> Press  << 2 >>: Managing Employee Record." << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*                                                                                        *\n";
+        cout << "\t\t\t\t\t\t=> Press  << 3 >>: Exit. " << endl << endl;
+        Sleep(200);
+        cout << "\t\t\t*****************************************************************************************\n";
+
+        cout << endl;
+        cout << "\t\t\t\t\tEnter your Choice::";
+
+        cin >> x;
+
+        switch (x) {
+        case 1:
+            foodRecord.menu();
+            break;
+        case 2:
+            employeeRecord.menu();
+            break;
+        case 3:
+            exit(0);
+            break;
+        default:
+            cout << "\n\n Invalid Value... please try again...";
+        }
+
+        _getch();
+    }
+};
+
+// Food class functions go here...
+
+// Employee class functions go here...
+
+
+int main() {
+    system("color 3f");
+    UserManager userManager;
+    Menu menu;
+
+    menu.displayCoverPage();
+    userManager.loadUsersFromFile();
+
+    while (true) {
+        int choice = menu.getUserChoice();
+
+        if (choice == 1) {
+            userManager.signup();
+        }
+        else if (choice == 2) {
+            bool loggedIn = userManager.login();
+            if (loggedIn) {
+                std::cout << "\t\t\tprocessing";
+                for (int i = 0; i < 3; i++) {
+                    std::cout << ".";
+                    Sleep(1000);
+                }
+                std::cout << std::endl;
+                std::cout << "\t\t\t\t\tLogin successful!" << std::endl;
+                userManager.saveUsersToFile();
+                Sleep(1500);
+                system("CLS");
+                break;
+            }
+            else {
+                std::cout << "\t\t\t\t\tInvalid username or password. Please try again." << std::endl;
+                Sleep(1500);
+                system("Cls");
+            }
+        }
+        else if (choice == 3) {
+            std::cout << "\t\t\t\t\tExiting..." << std::endl;
+            break;
+        }
+        else {
+            std::cout << "\t\t\t\t\tInvalid input. Please try again." << std::endl;
+        }
+    }
+
+    int branchChoice;
+    cout << endl << endl << endl << endl << endl << endl << endl;
+    Sleep(200);
+    cout << "\t\t\t*****************************************************************************************\n";
+    cout << "\t\t\t\t\t=> Select Branch::-" << endl << endl;
+    Sleep(200);
+    cout << "\t\t\t*                                                                                        *\n";
+    cout << "\t\t\t\t\t\t\t=> Press << 1 >> : Islamabad." << endl << endl;
+    Sleep(200);
+    cout << "\t\t\t*                                                                                        *\n";
+    cout << "\t\t\t\t\t\t\t=> Press  << 2 >>: Lahore." << endl << endl;
+    Sleep(200);
+    cout << "\t\t\t*                                                                                        *\n";
+    cout << "\t\t\t\t\t\t\t=> Press  << 3 >>: Karachi. " << endl << endl;
+    Sleep(200);
+    cout << "\t\t\t*                                                                                        *\n";
+    cout << "\t\t\t\t\t\t\t=> Press  << 4 >>: Exit. " << endl << endl;
+    Sleep(200);
+    cout << "\t\t\t*                                                                                        *\n";
+    cout << "\t\t\t*****************************************************************************************\n";
+ 
+    cout << endl;
+    cout << "\t\t\t\t\tEnter your Choice::";
+
+   
+    cin >> branchChoice;
+
+    IntegratedRecord selectedRecord;
+
+    switch (branchChoice) {
+    case 1:
+        system("cls");
+        system("color 2f");
+        menu.displaybranch();
+        break;
+
+    case 2:
+        system("color 4f");
+        system("cls");
+        menu.displaybranch1();
+        break;
+    case 3:
+        system("cls");
+        system("color 6f");
+        menu.displaybranch2();
+        break;
+    default:
+        cout << "Invalid choice. Exiting...\n";
+        return 1;
+    }
+
+    selectedRecord.menu();
+
+    return 0;
+}
+
+
+
